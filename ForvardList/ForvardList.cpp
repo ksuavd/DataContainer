@@ -20,6 +20,7 @@ public:
 	}
 	friend class ForwardList;
 	friend class Iterator;
+	friend ForwardList operator +()
 };
 int Element::count = 0;// Инициализируем статическую переменную, объявленную за классом 
  //Статическую переменную можно проиницилизировать только за классом
@@ -92,16 +93,6 @@ public:
 		{
 			push_back(*it);
 		}
-	}
-	ForwardList& operator(const ForwardList& other)
-	{
-		if (this == &other)return *this;
-		while (Head)pop_front();
-		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
-			push_front(Temp->Data);
-		revers();
-		cout << "CopyAssighment:\t" << this << endl;
-		return *this;
 	}
 
 	void push_front(int Data)
@@ -203,12 +194,28 @@ public:
 		cout << "Количество элементов списка: " << size << endl;
 		cout << "ОБЩЕЕ количество элементов: " << Element::count << endl;
 	}
-};
+	void reverse()
+	{
+		Element* Temp;
+		for (int i = 0; i < size - 1; i++)
+		{
+			Temp = Head;
+			while (Temp->pNext)
+				Temp = Temp->pNext;
+			insert(i, Temp->Data);
+			pop_back();
+		}
+	}
 
+};
+ForwardList operator +()
+{
+
+}
 //#define BASE_CHECK
 //#define RANGE_BASED_FOR_ARRAY
 //#define RANGE_BASED_FOR_LIST
-//#define HOME_WORK_1
+#define HOME_WORK_1
 
 int main()
 {
@@ -292,4 +299,17 @@ int main()
 	}
 	cout << endl;
 #endif
+
+/*	int n;
+	cout << "Введите размер списка: "; cin >> n;
+	ForwardList list;
+	for (int i = 0; i < n; i++)
+	{
+		list.push_back(rand() % 100);
+	}
+	list.print();
+	list.reverse();
+	list.print();
+
+*/
 }
