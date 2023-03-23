@@ -45,17 +45,18 @@ public:
 			size++;
 			return;
 		}
-		Element* New = new Element(Data);//1 создаем элемент
+	/*	Element* New = new Element(Data);//1 создаем элемент
 		New->pNext = Head;//2 
 		Head->pPrev = New;//3 
-		Head = New;       //4
+		Head = New;       //4*/
+		Head = Head->pPrev = new Element(Data, Head);
 		
 		size++;
 	}
 	void push_back(int Data)
 	{
 		if (Head == nullptr && Tail == nullptr)return push_front(Data);
-		Element* New = new Element(Data);//1 создаем элемент
+		Element* New = new Element(Data);//1 
 		New->pPrev = Tail;//2 
 		Tail->pNext = New;//3 
 		Tail = New;       //4
@@ -93,6 +94,39 @@ public:
 
 		size--;
 	}
+	void insert (int Index, int Data)
+	{
+		if (Index == 0) return push_front(Data);
+		if (Index > size)return;
+		Element* Temp;
+		Temp = Tail;
+		for (int i = 0; i < size - Index - 1; i++)
+		{
+			Temp = Temp->pPrev;
+		}
+		Element* New = new Element(Data);
+		New->pNext = Temp;
+		New->pPrev = Temp->pPrev;
+		Temp->pPrev->pNext = New;
+		Temp->pPrev = New;
+		size++;
+	}
+	void erase(int Index)
+	{
+		if (Index == 0) return pop_front();
+		if (Index > size)return;
+		Element* Temp;
+		Temp = Tail;
+		for (int i = 0; i < size - Index - 1; i++)
+		{
+			Temp = Temp->pPrev;
+		}
+		Element* Erased = Temp->pPrev->pNext;
+		Temp->pNext->pPrev = Temp->pPrev;
+		Temp->pPrev->pNext = Temp->pNext;
+		delete Erased;
+		size--;
+	}
 
 	//      Metods
 	void print()const
@@ -126,8 +160,18 @@ int main()
 		list.push_front(rand() % 100);
 	}
 	list.print();
-	list.reverse_print();
-	list.push_back(888);
+    //list.reverse_print();
+	//list.push_back(888);
+	//list.print();
+	int index;
+	int value;
+	cout << "Введите индекс добавляемого элемента: "; cin >> index;
+	cout << "Введите значение добавляемого элемента: "; cin >> value;
+	list.insert(index, value);
 	list.print();
-
+	cout << "Введите индекс удаляемого элемента: "; cin >> index;
+	list.erase(index);
+	list.print();
+	list.erase(2);
+	list.print();
 }
