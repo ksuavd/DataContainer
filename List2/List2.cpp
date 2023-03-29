@@ -284,7 +284,22 @@ public:
 		Tail->pNext = nullptr;
 		size--;
 	}
-
+	void erase(int Index)
+	{
+		if (Index == 0) return pop_front();
+		if (Index > size)return;
+		Element* Temp;
+		Temp = Tail;
+		for (int i = 0; i < size - Index - 1; i++)
+		{
+			Temp = Temp->pPrev;
+		}
+		Element* Erased = Temp->pPrev->pNext;
+		Temp->pNext->pPrev = Temp->pPrev;
+		Temp->pPrev->pNext = Temp->pNext;
+		delete Erased;
+		size--;
+	}
 	//				Methods:
 	void print()const
 	{
@@ -344,6 +359,8 @@ void main()
 	list.insert(index, value);
 	list.print();
 	list.reverse_print();
+	list.erase(2);
+	list.print();
 #endif // BASE_CHECK
 
 	List list = { 3, 5, 8, 13, 21 };
